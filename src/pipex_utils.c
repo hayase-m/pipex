@@ -6,7 +6,7 @@
 /*   By: hmaruyam <hmaruyam@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:11:35 by hmaruyam          #+#    #+#             */
-/*   Updated: 2025/08/19 18:31:07 by hmaruyam         ###   ########.fr       */
+/*   Updated: 2025/08/19 21:40:24 by hmaruyam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,19 @@ char	*free_split(char **str)
 char	**pipex_split(char const *s, char c)
 {
 	char	**result;
+	int		i;
 
 	if (!s)
 		return (NULL);
-	if (*s == '\0')
+	i = 0;
+	while (s[i] && s[i] == c)
+		i++;
+	if (s[i] == '\0')
 	{
 		result = malloc(sizeof(char *) * 2);
 		if (!result)
 			return (NULL);
-		result[0] = ft_strdup("");
+		result[0] = ft_strdup(s);
 		if (!result[0])
 		{
 			free(result);

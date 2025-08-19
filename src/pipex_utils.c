@@ -6,7 +6,7 @@
 /*   By: hmaruyam <hmaruyam@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:11:35 by hmaruyam          #+#    #+#             */
-/*   Updated: 2025/08/18 22:51:28 by hmaruyam         ###   ########.fr       */
+/*   Updated: 2025/08/19 01:51:00 by hmaruyam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,12 @@ char	**pipex_split(char const *s, char c)
 		result[1] = NULL;
 		return (result);
 	}
-	// 通常の場合
 	return (ft_split(s, c));
 }
 
-char	*find_path(char *command, char *envp[])
+static char	*check_direct_access(char *command)
 {
-	int		i;
 	char	*pathname;
-	char	**env_list;
-	char	*tmp_path;
 
 	if (access(command, F_OK) == 0)
 	{
@@ -64,14 +60,15 @@ char	*find_path(char *command, char *envp[])
 			return (NULL);
 		return (pathname);
 	}
-	i = 0;
-	while (envp[i] && !ft_strnstr(envp[i], "PATH=", 5))
-		i++;
-	if (!envp[i])
-		return (NULL);
-	env_list = ft_split(envp[i] + 5, ':');
-	if (!env_list)
-		return (NULL);
+	return (NULL);
+}
+
+static char	*search_in_env_paths(char *command, char **env_list)
+{
+	int		i;
+	char	*tmp_path;
+	char	*pathname;
+
 	i = 0;
 	while (env_list[i])
 	{
@@ -92,4 +89,24 @@ char	*find_path(char *command, char *envp[])
 	}
 	free_split(env_list);
 	return (NULL);
+}
+
+char	*find_path(char *command, char *envp[])
+{
+	int		i;
+	char	**env_list;
+	char	*result;
+
+	result = check_direct_access(command);
+	if (result)
+		return (result);
+	i = 0;
+	while (envp[i] && !ft_strnstr(envp[i], "PATH=", 5))
+		i++;
+	if (!envp[i])
+		return (NULL);
+	env_list = ft_split(envp[i] + 5, ':');
+	if (!env_list)
+		return (NULL);
+	return (search_in_env_paths(command, env_list));
 }

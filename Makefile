@@ -1,14 +1,13 @@
 NAME = pipex
 
 LIBFT_DIR = libft
-
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -O3
+CFLAGS = -Wall -Wextra -Werror
 INC = -Iinclude -I$(LIBFT_DIR)
 
-SRCS = src/main.c src/pipex_utils.c
+SRCS = src/main.c src/pipex_utils.c src/pipex_init.c src/pipex_process.c
 
 OBJS = $(SRCS:.c=.o)
 LINK_FLAGS = -L$(LIBFT_DIR) -lft

@@ -6,7 +6,7 @@
 /*   By: hmaruyam <hmaruyam@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 12:37:21 by hmaruyam          #+#    #+#             */
-/*   Updated: 2025/08/18 22:51:41 by hmaruyam         ###   ########.fr       */
+/*   Updated: 2025/08/19 01:57:00 by hmaruyam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-char		*find_path(char *command, char *envp[]);
-char		*free_split(char **str);
-char		**pipex_split(char const *s, char c);
-
 typedef struct s_pipex
 {
 	int		infile_fd;
@@ -38,5 +34,18 @@ typedef struct s_pipex
 	char	*cmd1_path;
 	char	*cmd2_path;
 }			t_pipex;
+
+char		*find_path(char *command, char *envp[]);
+char		*free_split(char **str);
+char		**pipex_split(char const *s, char c);
+void		cleanup(t_pipex *data, int mode);
+void		file_close(t_pipex *data);
+void		init_files_and_commands(t_pipex *data, char *argv[]);
+void		init_command_args_and_paths(t_pipex *data, char *argv[]);
+void		find_command_paths(t_pipex *data, char *envp[]);
+void		child_process_1(t_pipex *data, char *envp[]);
+void		child_process_2(t_pipex *data, char *envp[]);
+void		create_processes(t_pipex *data, char *envp[]);
+void		wait_children_and_exit(t_pipex *data);
 
 #endif

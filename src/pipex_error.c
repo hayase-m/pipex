@@ -6,7 +6,7 @@
 /*   By: hmaruyam <hmaruyam@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 10:51:00 by hmaruyam          #+#    #+#             */
-/*   Updated: 2025/08/19 13:19:30 by hmaruyam         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:17:34 by hmaruyam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,33 @@ void	put_system_error_exit(t_pipex *data, int code)
 	cleanup(data, code);
 }
 
-void	cleanup(t_pipex *data, int mode)
+void	file_close(t_pipex *data)
 {
 	if (data->infile_fd >= 0)
+	{
 		close(data->infile_fd);
+		data->infile_fd = -1;
+	}
 	if (data->outfile_fd >= 0)
+	{
 		close(data->outfile_fd);
+		data->outfile_fd = -1;
+	}
+	if (data->pipefd[0] >= 0)
+	{
+		close(data->pipefd[0]);
+		data->pipefd[0] = -1;
+	}
+	if (data->pipefd[1] >= 0)
+	{
+		close(data->pipefd[1]);
+		data->pipefd[1] = -1;
+	}
+}
+
+void	cleanup(t_pipex *data, int mode)
+{
+	file_close(data);
 	if (data->cmd1_arg)
 		free_split(data->cmd1_arg);
 	if (data->cmd2_arg)
@@ -51,17 +72,5 @@ void	cleanup(t_pipex *data, int mode)
 		free(data->cmd1_path);
 	if (data->cmd2_path)
 		free(data->cmd2_path);
-	if (data->pipefd[0] >= 0)
-		close(data->pipefd[0]);
-	if (data->pipefd[1] >= 0)
-		close(data->pipefd[1]);
 	exit(mode);
-}
-
-void	file_close(t_pipex *data)
-{
-	close(data->infile_fd);
-	close(data->outfile_fd);
-	close(data->pipefd[0]);
-	close(data->pipefd[1]);
 }

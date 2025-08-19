@@ -6,13 +6,27 @@
 /*   By: hmaruyam <hmaruyam@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 12:37:19 by hmaruyam          #+#    #+#             */
-/*   Updated: 2025/08/19 15:37:34 by hmaruyam         ###   ########.fr       */
+/*   Updated: 2025/08/19 17:27:34 by hmaruyam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-void	init_files(t_pipex *data, char *argv[])
+static void	init_data(t_pipex *data)
+{
+	data->infile_fd = -1;
+	data->outfile_fd = -1;
+	data->pipefd[0] = -1;
+	data->pipefd[1] = -1;
+	data->child1_pid = -1;
+	data->child2_pid = -1;
+	data->cmd1_arg = NULL;
+	data->cmd2_arg = NULL;
+	data->cmd1_path = NULL;
+	data->cmd2_path = NULL;
+}
+
+static void	init_files(t_pipex *data, char *argv[])
 {
 	data->infile_fd = open(argv[1], O_RDONLY);
 	if (data->infile_fd == -1)
@@ -22,7 +36,7 @@ void	init_files(t_pipex *data, char *argv[])
 		put_file_error(argv[4]);
 }
 
-void	init_commands(t_pipex *data, char *argv[], char *envp[])
+static void	init_commands(t_pipex *data, char *argv[], char *envp[])
 {
 	data->cmd1_arg = pipex_split(argv[2], ' ');
 	if (!data->cmd1_arg)
@@ -44,6 +58,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 	if (argc != 5)
 		return (1);
+	init_data(&data);
 	init_files(&data, argv);
 	init_commands(&data, argv, envp);
 	create_processes(&data, envp);

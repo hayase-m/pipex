@@ -7,7 +7,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 INC = -Iinclude -I$(LIBFT_DIR)
 
-SRCS = src/main.c src/pipex_utils.c src/pipex_init.c src/pipex_process.c
+SRCS = src/main.c src/pipex_utils.c src/pipex_process.c src/pipex_error.c
 
 OBJS = $(SRCS:.c=.o)
 LINK_FLAGS = -L$(LIBFT_DIR) -lft

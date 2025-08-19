@@ -6,7 +6,7 @@
 /*   By: hmaruyam <hmaruyam@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:11:35 by hmaruyam          #+#    #+#             */
-/*   Updated: 2025/08/19 01:51:00 by hmaruyam         ###   ########.fr       */
+/*   Updated: 2025/08/19 13:17:30 by hmaruyam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,6 @@ char	**pipex_split(char const *s, char c)
 	return (ft_split(s, c));
 }
 
-static char	*check_direct_access(char *command)
-{
-	char	*pathname;
-
-	if (access(command, F_OK) == 0)
-	{
-		pathname = ft_strdup(command);
-		if (!pathname)
-			return (NULL);
-		return (pathname);
-	}
-	return (NULL);
-}
-
 static char	*search_in_env_paths(char *command, char **env_list)
 {
 	int		i;
@@ -95,11 +81,19 @@ char	*find_path(char *command, char *envp[])
 {
 	int		i;
 	char	**env_list;
-	char	*result;
+	char	*pathname;
 
-	result = check_direct_access(command);
-	if (result)
-		return (result);
+	if (ft_strchr(command, '/'))
+	{
+		if (access(command, F_OK) == 0)
+		{
+			pathname = ft_strdup(command);
+			if (!pathname)
+				return (NULL);
+			return (pathname);
+		}
+		return (NULL);
+	}
 	i = 0;
 	while (envp[i] && !ft_strnstr(envp[i], "PATH=", 5))
 		i++;

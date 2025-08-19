@@ -6,7 +6,7 @@
 /*   By: hmaruyam <hmaruyam@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 12:37:21 by hmaruyam          #+#    #+#             */
-/*   Updated: 2025/08/19 15:59:44 by hmaruyam         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:21:37 by hmaruyam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ typedef struct s_pipex
 char		*find_path(char *command, char *envp[]);
 char		*free_split(char **str);
 char		**pipex_split(char const *s, char c);
-void		init_files(t_pipex *data, char *argv[]);
-void		init_commands(t_pipex *data, char *argv[], char *envp[]);
 void		cleanup(t_pipex *data, int mode);
 void		file_close(t_pipex *data);
 void		child_process_1(t_pipex *data, char *envp[]);

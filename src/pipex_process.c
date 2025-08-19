@@ -6,7 +6,7 @@
 /*   By: hmaruyam <hmaruyam@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 01:56:00 by hmaruyam          #+#    #+#             */
-/*   Updated: 2025/08/19 17:57:12 by hmaruyam         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:23:16 by hmaruyam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,18 @@ void	create_processes(t_pipex *data, char *envp[])
 	if (data->child1_pid == 0)
 		child_process_1(data, envp);
 	close(data->pipefd[1]);
+	data->pipefd[1] = -1;
 	data->child2_pid = fork();
 	if (data->child2_pid == -1)
 		put_system_error_exit(data, 1);
 	if (data->child2_pid == 0)
 		child_process_2(data, envp);
 	close(data->pipefd[0]);
+	data->pipefd[0] = -1;
 	close(data->infile_fd);
+	data->infile_fd = -1;
 	close(data->outfile_fd);
+	data->outfile_fd = -1;
 }
 
 void	wait_children_and_exit(t_pipex *data)

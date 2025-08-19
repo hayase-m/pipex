@@ -6,7 +6,7 @@
 /*   By: hmaruyam <hmaruyam@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:11:35 by hmaruyam          #+#    #+#             */
-/*   Updated: 2025/08/19 13:17:30 by hmaruyam         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:31:07 by hmaruyam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,28 +49,41 @@ char	**pipex_split(char const *s, char c)
 	return (ft_split(s, c));
 }
 
+static char	*join_and_check(char *dir, char *command)
+{
+	char	*tmp_path;
+	char	*pathname;
+
+	tmp_path = ft_strjoin(dir, "/");
+	if (!tmp_path)
+		return (NULL);
+	pathname = ft_strjoin(tmp_path, command);
+	if (!pathname)
+	{
+		free(tmp_path);
+		return (NULL);
+	}
+	free(tmp_path);
+	if (access(pathname, F_OK) == 0)
+		return (pathname);
+	free(pathname);
+	return (NULL);
+}
+
 static char	*search_in_env_paths(char *command, char **env_list)
 {
 	int		i;
-	char	*tmp_path;
 	char	*pathname;
 
 	i = 0;
 	while (env_list[i])
 	{
-		tmp_path = ft_strjoin(env_list[i], "/");
-		if (!tmp_path)
-			return (free_split(env_list));
-		pathname = ft_strjoin(tmp_path, command);
-		if (!pathname)
-			return (free_split(env_list));
-		free(tmp_path);
-		if (access(pathname, F_OK) == 0)
+		pathname = join_and_check(env_list[i], command);
+		if (pathname)
 		{
 			free_split(env_list);
 			return (pathname);
 		}
-		free(pathname);
 		i++;
 	}
 	free_split(env_list);

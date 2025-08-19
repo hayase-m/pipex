@@ -6,7 +6,7 @@
 /*   By: hmaruyam <hmaruyam@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 12:37:19 by hmaruyam          #+#    #+#             */
-/*   Updated: 2025/08/19 13:19:00 by hmaruyam         ###   ########.fr       */
+/*   Updated: 2025/08/19 15:37:34 by hmaruyam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void	init_commands(t_pipex *data, char *argv[], char *envp[])
 {
 	data->cmd1_arg = pipex_split(argv[2], ' ');
 	if (!data->cmd1_arg)
-		put_system_error_exit(data, 1);
+		put_system_error_exit(data, EXIT_GENERAL_ERROR);
 	data->cmd2_arg = pipex_split(argv[3], ' ');
 	if (!data->cmd2_arg)
-		put_system_error_exit(data, 1);
+		put_system_error_exit(data, EXIT_GENERAL_ERROR);
 	data->cmd1_path = find_path(data->cmd1_arg[0], envp);
 	if (!data->cmd1_path)
 		put_command_error(data->cmd1_arg[0]);

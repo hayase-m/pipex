@@ -6,7 +6,7 @@
 /*   By: hmaruyam <hmaruyam@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 12:37:21 by hmaruyam          #+#    #+#             */
-/*   Updated: 2025/08/19 11:01:00 by hmaruyam         ###   ########.fr       */
+/*   Updated: 2025/08/19 15:59:44 by hmaruyam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+# define EXIT_SUCCESS 0
+# define EXIT_GENERAL_ERROR 1
+# define EXIT_CANNOT_EXEC 126
+# define EXIT_CMD_NOT_FOUND 127
 
 typedef struct s_pipex
 {
